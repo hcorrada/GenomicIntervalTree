@@ -109,7 +109,7 @@ test_that("findOverlaps works", {
     GRanges(seqnames = "chr2", ranges = IRanges(4:3, 6),
             strand = "+", score = 5:4, GC = 0.45)
   
-  git=as(gr,"GIntervalTree")
+  git <- GIntervalTree(gr)
   
   olaps2=findOverlaps(gr1, gr)
   olaps1=findOverlaps(gr1, git)
