@@ -10,7 +10,7 @@ License: Artistic-2.0
 Depends:
     GenomicRanges
 Collate:
-    'findOverlaps-methods.R'
-    'GIntervalTree-class.R'
     'IntervalTreeList-class.R'
     'SimpleIntervalTreeList-class.R'
+    'GIntervalTree-class.R'
+    'findOverlaps-methods.R'

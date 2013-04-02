@@ -1,5 +1,12 @@
-#' class definition
-#' @export
+#' GIntervalTree class
+#' 
+#' Defines persistent interval trees for GRanges objects.
+#' 
+#' 
+#' @name GIntervalTree-class
+#' @family GIntervalTree
+#' 
+#' @exportClass GIntervalTree
 setClass("GIntervalTree",
          contains="GenomicRanges",
          representation(
@@ -15,21 +22,72 @@ setClass("GIntervalTree",
            strand=Rle(strand()))
 )
 
-#' accessors
+#' seqnames accessor 
+#' 
+#' @rdname GIntervalTree-class
+#' @family GIntervalTree
 #' @export
+#' @importMethodsFrom GenomicRanges seqnames
 setMethod("seqnames", "GIntervalTree", function(x) x@seqnames)
 
+#' ranges accessor
+#' 
+#' @rdname GIntervalTree-class
+#' @family GIntervalTree
 #' @export
+#' @importMethodsFrom GenomicRanges ranges
 setMethod("ranges", "GIntervalTree", function(x) x@ranges)
 
+#' strand accessor
+#' 
+#' @rdname GIntervalTree-class
+#' @family GIntervalTree
 #' @export
+#' @importMethodsFrom GenomicRanges strand
 setMethod("strand", "GIntervalTree", function(x) x@strand)
 
+#' seqinfo accessor
+#' 
+#' @rdname GIntervalTree-class
+#' @family GIntervalTree
 #' @export
+#' @importMethodsFrom GenomicRanges seqinfo
 setMethod("seqinfo", "GIntervalTree", function(x) x@seqinfo)
 
-#' construct from GRanges object via coercion
+#' intervalTrees accessor generic
+#' 
+#' @rdname GIntervalTree-class
+#' @family GIntervalTree
 #' @export
+setGeneric("intervalTrees", function(x) standardGeneric("intervalTrees"))
+
+#' intervalTrees accessor method
+#' 
+#' @rdname GIntervalTree-class
+#' @family GIntervalTree
+#' @export
+setMethod("intervalTrees", "GIntervalTree", function(x) x@intervalTrees)
+
+#' rangesMap accessor generic
+#' 
+#' @rdname GIntervalTree-class
+#' @family GIntervalTree
+#' @export
+setGeneric("rangesMap", function(x) standardGeneric("rangesMap"))
+
+#' rangesMap accessor method
+#' 
+#' @rdname GIntervalTree-class
+#' @family GIntervalTree
+#' @export
+setMethod("rangesMap", "GIntervalTree", function(x) x@rangesMap)
+
+
+#' construct from GRanges object via coercion
+#' 
+#' @name as
+#' @family GIntervalTree
+#' @importClassesFrom GenomicRanges GRanges
 setAs("GRanges", "GIntervalTree",
       function(from) {
         seqnames=seqnames(from)

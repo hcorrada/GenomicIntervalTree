@@ -1,5 +1,8 @@
 #' class definition
-#' @export
+#' @name IntervalTreeList-class
+#' @family IntervalTreeList
+#' 
+#' @exportClass IntervalTreeList
 setClass("IntervalTreeList",
          representation("VIRTUAL"),
          prototype=prototype(elementType="IntervalTree"),
@@ -12,12 +15,14 @@ IntervalTreeList=function(rangesList) {
 }
 
 #' construct from ranges list by coercion
-#' @export
+#' @name as
+#' @family IntervalTreeList
+#' @importClassesFrom GenomicRanges RangesList
 setAs("RangesList", "IntervalTreeList",
       function(from) {
         #IRanges:::validObject(from)
         listData=vector("list", length(from))
         for (i in seq_along(from))
-          listData[[i]] = as(x[[i]], "IntervalTree")
+          listData[[i]] = as(from[[i]], "IntervalTree")
         IRanges:::newList("SimpleIntervalTreeList", listData)
       })
