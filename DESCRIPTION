@@ -8,6 +8,7 @@ Maintainer: Hector Corrada Bravo <hcorrada@gmail.com>
 Description: Classes and methods for persistent interval trees for GenomicRanges
 License: Artistic-2.0
 Depends:
+    BiocGenerics,
     GenomicRanges
 Collate:
     'IntervalTreeList-class.R'

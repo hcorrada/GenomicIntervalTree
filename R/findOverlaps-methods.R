@@ -1,4 +1,10 @@
+#' findOverlaps in an GIntervalTree
+#' 
+#' @name findOverlaps,GRanges,GIntervalTree-method
+#' @family GIntervalTree
+#' 
 #' @export
+#' @importClassesFrom GenomicRanges GenomicRanges
 setMethod("findOverlaps", c("GenomicRanges", "GIntervalTree"),
           function(query, subject, maxgap=0L, minoverlap=1L,
                    type=c("any","start","end","within","equal"),
@@ -9,29 +15,38 @@ setMethod("findOverlaps", c("GenomicRanges", "GIntervalTree"),
             type <- match.arg(type)
             select <- match.arg(select)
             
+            
             ## merge() also checks that 'query' and 'subject' are based on the
             ## same reference genome.
-            seqinfo <- merge(seqinfo(query), seqinfo(subject))
+            
+            ## hack for wierd dispatch error
+            ## TODO: fix this hack
+            mergeFun=selectMethod("merge",c("Seqinfo","Seqinfo"))
+            seqinfo <- mergeFun(seqinfo(query), seqinfo(subject))
             
             q_len <- length(query)
             s_len <- length(subject)
             q_seqnames <- seqnames(query)
             s_seqnames <- seqnames(subject)
-            q_seqlevels <- levels(q_seqnames)
-            s_seqlevels <- levels(s_seqnames)
+            
+            ## another hack due to weird dispatch
+            ## TODO: fix this hack
+            levelsFun <- selectMethod("levels", "Rle")
+            q_seqlevels <- levelsFun(q_seqnames)
+            s_seqlevels <- levelsFun(s_seqnames)
             
             q_splitranges <- splitRanges(q_seqnames)
-            s_splitranges <- subject@rangeMap
+            s_splitranges <- rangeMap(subject)
             
             q_ranges <- unname(ranges(query))
-            s_trees <- subject@intervalTrees
+            s_trees <- intervalTrees(subject)
             
             if (ignore.strand) {
               q_strand <- rep.int(1L, q_len)
               s_strand <- rep.int(1L, s_len)
             } else {
-              q_strand <- .strandAsSignedNumber(strand(query))
-              s_strand <- .strandAsSignedNumber(strand(subject))
+              q_strand <- GenomicRanges:::.strandAsSignedNumber(strand(query))
+              s_strand <- GenomicRanges:::.strandAsSignedNumber(strand(subject))
             }
             
             common_seqlevels <- intersect(q_seqlevels, s_seqlevels)
@@ -50,7 +65,7 @@ setMethod("findOverlaps", c("GenomicRanges", "GIntervalTree"),
 #                                                              seqselect(q_ranges, q_idx),
 #                                                              seqselect(s_ranges, s_idx),
 #                                                              maxgap, minoverlap, type)
-                                hits <- findOverlaps(seqselect(q_ranges, q_idx), intervalTrees[[seqlevel]],
+                                hits <- findOverlaps(seqselect(q_ranges, q_idx), s_trees[[seqlevel]],
                                                      maxgap,minoverlap,type)
                                 
                                 q_hits <- queryHits(hits)
@@ -95,3 +110,20 @@ setMethod("findOverlaps", c("GenomicRanges", "GIntervalTree"),
                  queryLength=q_len, subjectLength=s_len,
                  check=FALSE)
           })
+
+#' subset a GIntervalTree object by overlaps
+#' returns a GRanges object not another GIntervalTree object
+#' 
+#' @name subsetByOverlaps,GIntervalTree,GRanges-method
+#' @family GIntervalTree
+#' @export
+#' @importClassesFrom GenomicRanges GenomicRanges
+setMethod("subsetByOverlaps", c("GIntervalTree", "GenomicRanges"),
+          function(query, subject, maxgap=0L, minoverlap=1L,
+                   type=c("any","start","end","within","equal"),
+                   ignore.strand=FALSE) {
+            hits=findOverlaps(subject, query, maxgap, minoverlap, type, select="all", ignore.strand)
+            hits=unique(subjectHits(hits))
+            as(query[hits,], "GRanges")
+          }
+)

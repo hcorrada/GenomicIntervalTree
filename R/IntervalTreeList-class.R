@@ -10,7 +10,7 @@ setClass("IntervalTreeList",
 
 #' constructor
 #' @export
-IntervalTreeList=function(rangesList) {
+IntervalTreeList <- function(rangesList) {
   as(rangesList, "IntervalTreeList")
 }
 
@@ -23,6 +23,9 @@ setAs("RangesList", "IntervalTreeList",
         #IRanges:::validObject(from)
         listData=vector("list", length(from))
         for (i in seq_along(from))
-          listData[[i]] = as(from[[i]], "IntervalTree")
+          listData[[i]] <- as(from[[i]], "IntervalTree")
+        names(listData) <- names(from)
         IRanges:::newList("SimpleIntervalTreeList", listData)
-      })
+      }
+)
+

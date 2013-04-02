@@ -7,6 +7,8 @@
 #' @family GIntervalTree
 #' 
 #' @exportClass GIntervalTree
+#' @import GenomicRanges
+#' @import BiocGenerics
 setClass("GIntervalTree",
          contains="GenomicRanges",
          representation(
@@ -73,14 +75,14 @@ setMethod("intervalTrees", "GIntervalTree", function(x) x@intervalTrees)
 #' @rdname GIntervalTree-class
 #' @family GIntervalTree
 #' @export
-setGeneric("rangesMap", function(x) standardGeneric("rangesMap"))
+setGeneric("rangeMap", function(x) standardGeneric("rangeMap"))
 
 #' rangesMap accessor method
 #' 
 #' @rdname GIntervalTree-class
 #' @family GIntervalTree
 #' @export
-setMethod("rangesMap", "GIntervalTree", function(x) x@rangesMap)
+setMethod("rangeMap", "GIntervalTree", function(x) x@rangeMap)
 
 
 #' construct from GRanges object via coercion
@@ -103,4 +105,29 @@ setAs("GRanges", "GIntervalTree",
                 ranges=ranges(from),
                 rangeMap=rangeMap)
         out
-      })
+      }
+)
+
+#' constructor function using GRanges object
+#' 
+#' @family GIntervalTree
+#' @export
+GIntervalTree <- function(x) {
+  as(x, "GIntervalTree")
+}
+
+#' coercion from GIntervalTree to GRanges object
+#' 
+#' @family GIntervalTree
+#' @name as
+#' @importClassesFrom GenomicRanges GRanges
+setAs("GIntervalTree", "GRanges",
+      function(from) {
+        out=new("GRanges",
+                seqnames=seqnames(from),
+                strand=strand(from),
+                elementMetadata=mcols(from),
+                seqinfo=seqinfo(from),
+                ranges=ranges(from))
+      }
+)
