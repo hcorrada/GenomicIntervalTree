@@ -1,1 +1,9 @@
-
+export(IntervalTreeList)
+exportClasses(GIntervalTree)
+exportClasses(IntervalTreeList)
+exportClasses(SimpleIntervalTreeList)
+exportMethods(findOverlaps)
+exportMethods(ranges)
+exportMethods(seqinfo)
+exportMethods(seqnames)
+exportMethods(strand)

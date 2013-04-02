@@ -5,6 +5,12 @@ Version: 0.99.0
 Date: 2013-03-31
 Author: Hector Corrada Bravo
 Maintainer: Hector Corrada Bravo <hcorrada@gmail.com>
-Description: Classes and methods for persistent interval trees for GenomicRanges 
+Description: Classes and methods for persistent interval trees for GenomicRanges
 License: Artistic-2.0
-Depends: GenomicRanges
+Depends:
+    GenomicRanges
+Collate:
+    'findOverlaps-methods.R'
+    'GIntervalTree-class.R'
+    'IntervalTreeList-class.R'
+    'SimpleIntervalTreeList-class.R'
