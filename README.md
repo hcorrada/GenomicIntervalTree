@@ -1,7 +1,7 @@
-A proposal for persistent IntervalTrees on GenomicRanges objects
+A proposal for IntervalTrees on GenomicRanges objects
 =================================================================
 
-I'm writing an application where many `findOverlap` calls are made on relatively static `GRanges` objects. For `IRanges` we can create persistent `IntervalTree` objects that would serve the multiple overlap query use-case. There is no equivalent for `GenomicRanges` objects, so I'm proposing this.
+I'm writing an application where lots `findOverlap` calls are made on static `GRanges` objects. For `IRanges` we can create persistent `IntervalTree` objects that would serve the multiple overlap query use-case. There is no equivalent for `GenomicRanges` objects, so I'm proposing this.
 
 Usage
 ------
@@ -24,9 +24,7 @@ gr <-
             strand = "+", score = 5:4, GC = 0.45)
   
   git <- GIntervalTree(gr)
-  
-  # this uses the interval trees for each seqlevel
-  olaps1 <- findOverlaps(gr1, git)
+  olaps <- findOverlaps(gr1, git)
 ```
 Classes
 --------
@@ -53,13 +51,19 @@ A number of `coerce` methods are defined. Main ones are `coerce,RangesList,Inter
 
 The `findOverlaps,GenomicRanges,GIntervalTree-method` is defined here. For each of the common seqlevels in the  query and the subject, the corresponding IntervalTree of the subject is used. All other derived methods, e.g., `countOverlaps` and `subsetByOverlaps` where the subject is a `GIntervalOverlaps` is the subject call this method.
 
+A lot of the code for the `findOverlaps,GenomicRanges,GIntervalTree-method` method is duplicated from the `findOverlaps,GenomicRanges,GenomicRanges-method`. Some of this code is there to deal with splitting up the ranges in the `GenomicRanges` object. It might make more sense for these functions to call a `findOverlaps,RangesList,RangesList-method`?
+
 ### subsetByOverlaps
-**THIS IS WIERD!** The `subsetByOverlaps,GIntervalTree,GenomicRanges-method` is also implemented here. It returns a `GRanges` object (instead of an `GIntervalTree` object). The expectation is that objects `sgr1` and `sgr2` in the following example are equal.
+**THIS IS WEIRD!** The `subsetByOverlaps,GIntervalTree,GenomicRanges-method` is also implemented here. It returns a `GRanges` object (instead of an `GIntervalTree` object). The expectation is that objects `sgr1` and `sgr2` in the following example are equal.
 
 ```{r}
 sgr1 <- subsetByOverlaps(query, subject)
 sgr2 <- subsetByOverlaps(GIntervalTree(query), subject)
 ```
 
+There is no equivalent method for `IntervalTree` objects, e.g., `subsetByOverlaps,IntervalTree,Ranges-method`. Perhaps it should be defined in a similar way. Otherwise, a new generic might be worth defining that has this functionality.
+ 
+One last thing
+---------------
 
-
+The implementation is not complete yet (it just implements what I need for my application). 
