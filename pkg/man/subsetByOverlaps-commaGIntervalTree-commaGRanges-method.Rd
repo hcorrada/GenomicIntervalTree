@@ -9,7 +9,7 @@ returns a GRanges object not another GIntervalTree object}
 \seealso{
   Other GIntervalTree: \code{\link{GIntervalTree}},
   \code{\link{GIntervalTree-class}}, \code{\link{as}},
-  \code{\link{as}},
+  \code{\link{as}}, \code{\link{as}},
   \code{\link{findOverlaps,GRanges,GIntervalTree-method}},
   \code{\link{intervalTrees}}, \code{\link{intervalTrees}},
   \code{\link{rangeMap}}, \code{\link{rangeMap}},
