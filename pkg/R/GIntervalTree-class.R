@@ -1,3 +1,8 @@
+#' union class
+#' @exportClass IRangesOrRangesList
+#' @import GenomicRanges
+setClassUnion("IRangesOrRangesList", c("IRanges", "RangesList"))
+
 #' GIntervalTree class
 #' 
 #' Defines persistent interval trees for GRanges objects.
@@ -13,9 +18,9 @@ setClass("GIntervalTree",
          contains="GenomicRanges",
          representation(
            seqnames="Rle",
-           ranges="IRanges",
-           intervalTrees="IntervalTreeList",
-           rangeMap="IRangesList",
+           ranges="IRangesOrRangesList",
+           #intervalTrees="IntervalTreeList",
+           #rangeMap="IRangesList",
            strand="Rle",
            elementMetadata="DataFrame",
            seqinfo="Seqinfo"),
@@ -101,9 +106,10 @@ setAs("GRanges", "GIntervalTree",
                 strand=strand(from),
                 elementMetadata=mcols(from),
                 seqinfo=seqinfo(from),
-                intervalTrees=intervalTrees,
-                ranges=ranges(from),
-                rangeMap=rangeMap)
+                #intervalTrees=intervalTrees,
+                #ranges=ranges(from),
+                ranges=intervalTrees)
+                #rangeMap=rangeMap)
         out
       }
 )
