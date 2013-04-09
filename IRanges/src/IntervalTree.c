@@ -558,6 +558,8 @@ SEXP IntegerIndexedIntervalTree_indexPositions(SEXP r_tree) {
   struct rbTreeNode *p = tree->root;
   int height = 0;
   int *i_elt;
+
+  /*Rprintf("tree length %d\n", tree->n);*/
   
   PROTECT(r_indexPositions = allocVector(INTSXP, tree->n));
   i_elt = INTEGER(r_indexPositions);
@@ -602,7 +604,7 @@ SEXP IntegerIntervalTree_asIRanges(SEXP r_tree) {
   popRHandlers();
   int i, *s_elt, *w_elt;
 
-  Rprintf("tree size %d\n", tree->n);
+  /* Rprintf("tree size %d\n", tree->n); */
   
   PROTECT(r_start = allocVector(INTSXP, tree->n));
   PROTECT(r_width = allocVector(INTSXP, tree->n));

@@ -9,10 +9,8 @@ Description: Classes and methods for persistent interval trees for GenomicRanges
 License: Artistic-2.0
 Depends:
     BiocGenerics,
-    GenomicRanges
+    IRanges
 Collate:
     'IntervalTreeList-class.R'
     'SimpleIntervalTreeList-class.R'
     'PartitionedIntervalTree-class.R'
-    'GIntervalTree-class.R'
-    'findOverlaps-methods.R'

@@ -7,6 +7,6 @@
 \seealso{
   Other IntervalTreeList:
   \code{\link{SimpleIntervalTreeList-class}},
-  \code{\link{as}}, \code{\link{as}}, \code{\link{as}}
+  \code{\link{as}}, \code{\link{as}}
 }
 
