@@ -13,5 +13,6 @@ Depends:
 Collate:
     'IntervalTreeList-class.R'
     'SimpleIntervalTreeList-class.R'
+    'PartitionedIntervalTree-class.R'
     'GIntervalTree-class.R'
     'findOverlaps-methods.R'

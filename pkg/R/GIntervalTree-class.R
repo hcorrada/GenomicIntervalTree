@@ -1,7 +1,6 @@
-#' union class
-#' @exportClass IRangesOrRangesList
-#' @import GenomicRanges
-setClassUnion("IRangesOrRangesList", c("IRanges", "RangesList"))
+#' calss definition
+#' @exportClass IRangesOrPartitionedIntervalTree
+setClassUnion("IRangesOrPartitionedIntervalTree", c("IRanges", "PartitionedIntervalTree"))
 
 #' GIntervalTree class
 #' 
@@ -18,7 +17,7 @@ setClass("GIntervalTree",
          contains="GenomicRanges",
          representation(
            seqnames="Rle",
-           ranges="IRangesOrRangesList",
+           ranges="IRangesOrPartitionedIntervalTree",
            #intervalTrees="IntervalTreeList",
            #rangeMap="IRangesList",
            strand="Rle",

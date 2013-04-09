@@ -1,12 +1,12 @@
 \name{as}
 \alias{as}
-\title{construct from ranges list by coercion}
+\title{construct from GRanges object via coercion}
 \description{
-  construct from ranges list by coercion
-
   construct from GRanges object via coercion
 
   coercion from GIntervalTree to GRanges object
+
+  construct from ranges list by coercion
 }
 \seealso{
   Other GIntervalTree: \code{\link{GIntervalTree}},
