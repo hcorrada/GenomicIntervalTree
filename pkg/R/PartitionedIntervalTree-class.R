@@ -66,3 +66,28 @@ setAs("PartitionedIntervalTree", "IRanges",
 #' @export
 setMethod("length", "PartitionedIntervalTree", function(x) x@length)
 
+.getPartition <- function(x) {
+  if (class(x) != "PartitionedIntervalTree")
+    stop("'x' must be of class 'PartitionedIntervalTree'")
+  
+  lvls <- names(x@intervalTrees)
+  out <- character(length(x))
+  for (i in seq_along(x@intervalTrees)) {
+    curTree <- x@intervalTrees[[i]]
+    cur_indexes <- .indexedIntervalTree_indexPositions(curTree)
+    out[cur_indexes] <- lvls[i]
+  }
+  Rle(factor(out, levels=lvls))
+}
+
+#' subset method
+#' 
+#' @family ParitionedIntervalTree
+#' @rdname PartitionedIntervalTree-class
+#' @export
+setMethod("[", "PartitionedIntervalTree",
+          function(x, i, j, ...) {
+            ranges <- as(x, "IRanges")[i]
+            partition <- .getPartition(x)[i]
+            PartitionedIntervalTree(ranges, partition)
+          })
