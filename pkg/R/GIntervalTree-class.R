@@ -46,6 +46,8 @@ setValidity2("GIntervalTree", .valid.GIntervalTree)
 
 #' seqnames accessor 
 #' 
+#' this walks through the Interval Trees, should be avoided
+#' 
 #' @rdname GIntervalTree-class
 #' @family GIntervalTree
 #' @export
@@ -75,6 +77,15 @@ setMethod("strand", "GIntervalTree", function(x) x@strand)
 #' @export
 #' @importMethodsFrom GenomicRanges seqinfo
 setMethod("seqinfo", "GIntervalTree", function(x) x@seqinfo)
+
+#' length accessor
+#' 
+#' The GenomicRanges method uses seqnames which we should avoid in GIntervalTree
+#' 
+#' @rdname GIntervalTree-class
+#' @family GIntervalTree
+#' @export
+setMethod("length", "GIntervalTree", function(x) length(ranges(x)))
 
 #' construct from GRanges object via coercion
 #' 
