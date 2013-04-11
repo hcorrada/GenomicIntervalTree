@@ -1,7 +1,3 @@
-#' calss definition
-#' @exportClass IRangesOrPartitionedIntervalTree
-setClassUnion("IRangesOrPartitionedIntervalTree", c("IRanges", "PartitionedIntervalTree"))
-
 #' GIntervalTree class
 #' 
 #' Defines persistent interval trees for GRanges objects.
@@ -16,17 +12,37 @@ setClassUnion("IRangesOrPartitionedIntervalTree", c("IRanges", "PartitionedInter
 setClass("GIntervalTree",
          contains="GenomicRanges",
          representation(
-           seqnames="Rle",
-           ranges="IRangesOrPartitionedIntervalTree",
-           #intervalTrees="IntervalTreeList",
-           #rangeMap="IRangesList",
+           ranges="PartitionedIntervalTree",
            strand="Rle",
            elementMetadata="DataFrame",
            seqinfo="Seqinfo"),
          prototype(
-           seqnames=Rle(factor()),
            strand=Rle(strand()))
 )
+
+.valid.GIntervalTree.length <- function(x) {
+  n <- length(ranges(x))
+  if ((length(strand(x)) != n)
+      || (nrow(mcols(x)) != n))
+    return("slot lengths are not all equal")
+  NULL
+}
+
+.valid.GIntervalTree.ranges <- function(x) {
+  if (class(ranges(x)) != "PartitionedIntervalTree")
+    return("'ranges(x)' must be a PartitionedIntervalTree instance")
+  NULL
+}
+
+.valid.GIntervalTree <- function(x) {
+  c(.valid.GIntervalTree.length(x),
+    .valid.GIntervalTree.ranges(x),
+    .valid.GenomicRanges.strand(x),
+    .valid.GenomicRanges.mcols(x),
+    valid.GenomicRanges.seqinfo(x))
+}
+
+setValidity2("GIntervalTree", .valid.GIntervalTree)
 
 #' seqnames accessor 
 #' 
@@ -34,7 +50,7 @@ setClass("GIntervalTree",
 #' @family GIntervalTree
 #' @export
 #' @importMethodsFrom GenomicRanges seqnames
-setMethod("seqnames", "GIntervalTree", function(x) x@seqnames)
+setMethod("seqnames", "GIntervalTree", function(x) .getPartition(ranges(x)))
 
 #' ranges accessor
 #' 
@@ -60,35 +76,6 @@ setMethod("strand", "GIntervalTree", function(x) x@strand)
 #' @importMethodsFrom GenomicRanges seqinfo
 setMethod("seqinfo", "GIntervalTree", function(x) x@seqinfo)
 
-#' intervalTrees accessor generic
-#' 
-#' @rdname GIntervalTree-class
-#' @family GIntervalTree
-#' @export
-setGeneric("intervalTrees", function(x) standardGeneric("intervalTrees"))
-
-#' intervalTrees accessor method
-#' 
-#' @rdname GIntervalTree-class
-#' @family GIntervalTree
-#' @export
-setMethod("intervalTrees", "GIntervalTree", function(x) x@intervalTrees)
-
-#' rangesMap accessor generic
-#' 
-#' @rdname GIntervalTree-class
-#' @family GIntervalTree
-#' @export
-setGeneric("rangeMap", function(x) standardGeneric("rangeMap"))
-
-#' rangesMap accessor method
-#' 
-#' @rdname GIntervalTree-class
-#' @family GIntervalTree
-#' @export
-setMethod("rangeMap", "GIntervalTree", function(x) x@rangeMap)
-
-
 #' construct from GRanges object via coercion
 #' 
 #' @name as
@@ -96,19 +83,12 @@ setMethod("rangeMap", "GIntervalTree", function(x) x@rangeMap)
 #' @importClassesFrom GenomicRanges GRanges
 setAs("GRanges", "GIntervalTree",
       function(from) {
-        seqnames=seqnames(from)
-        rangeMap=splitRanges(seqnames)
-        
-        intervalTrees=IntervalTreeList(as(from, "RangesList"))
-        out=new("GIntervalTree",
-                seqnames=seqnames(from),
+        out=new2("GIntervalTree",
                 strand=strand(from),
                 elementMetadata=mcols(from),
                 seqinfo=seqinfo(from),
-                #intervalTrees=intervalTrees,
-                #ranges=ranges(from),
-                ranges=intervalTrees)
-                #rangeMap=rangeMap)
+                ranges=PartitionedIntervalTree(ranges(from), seqnames(from)),
+                check=FALSE)
         out
       }
 )
@@ -129,10 +109,21 @@ GIntervalTree <- function(x) {
 setAs("GIntervalTree", "GRanges",
       function(from) {
         out=new("GRanges",
-                seqnames=seqnames(from),
+                seqnames=.getPartition(ranges(from)),
                 strand=strand(from),
                 elementMetadata=mcols(from),
                 seqinfo=seqinfo(from),
-                ranges=ranges(from))
+                ranges=as(ranges(from), "IRanges"))
       }
 )
+
+#' subsetting
+#' 
+#' @family GIntervalTree
+#' @rdname GIntervalTree-class
+#' @export
+setMethod("[", "GIntervalTree",
+          function(x, i, j, ...) {
+            gr <- as(x, "GRanges")[i]
+            as(gr, "GIntervalTree")
+          })

@@ -91,3 +91,35 @@ setMethod("[", "PartitionedIntervalTree",
             partition <- .getPartition(x)[i]
             PartitionedIntervalTree(ranges, partition)
           })
+
+#' start accessor
+#' 
+#' @family PartitionedIntervalTree
+#' @rdname PartitionedIntervalTree-class
+#' @export
+setMethod("start", "PartitionedIntervalTree",
+          function(x) {
+            out <- integer(length(x))
+            for (i in seq_along(x@intervalTrees)) {
+              curTree <- x@intervalTrees[[i]]
+              curIndexes <- .indexedIntervalTree_indexPositions(curTree)
+              out[curIndexes] <- start(curTree)
+            }
+            out
+          })
+
+#' end accessor
+#' 
+#' @family PartitionedIntervalTree
+#' @rdname PartitionedIntervalTree-class
+#' @export
+setMethod("end", "PartitionedIntervalTree", 
+          function(x) {
+            out <- integer(length(x))
+            for (i in seq_along(x@intervalTrees)) {
+              curTree <- x@intervalTrees[[i]]
+              curIndexes <- .indexedIntervalTree_indexPositions(curTree)
+              out[curIndexes] <- end(curTree)
+            }
+            out
+          })
