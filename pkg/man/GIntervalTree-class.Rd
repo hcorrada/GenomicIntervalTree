@@ -1,7 +1,7 @@
 \name{GIntervalTree-class}
 \alias{GIntervalTree-class}
-\alias{intervalTrees}
-\alias{rangeMap}
+\alias{[}
+\alias{length}
 \alias{ranges}
 \alias{seqinfo}
 \alias{seqnames}
@@ -10,7 +10,7 @@
 \description{
   Defines persistent interval trees for GRanges objects.
 
-  seqnames accessor
+  this walks through the Interval Trees, should be avoided
 
   ranges accessor
 
@@ -18,58 +18,45 @@
 
   seqinfo accessor
 
-  intervalTrees accessor generic
+  The GenomicRanges method uses seqnames which we should
+  avoid in GIntervalTree
 
-  intervalTrees accessor method
-
-  rangesMap accessor generic
-
-  rangesMap accessor method
+  subsetting
 }
 \seealso{
   Other GIntervalTree: \code{\link{GIntervalTree}},
   \code{\link{as}}, \code{\link{as}}, \code{\link{as}},
-  \code{\link{findOverlaps,GRanges,GIntervalTree-method}},
-  \code{\link{subsetByOverlaps,GIntervalTree,GRanges-method}}
+  \code{\link{as}},
+  \code{\link{findOverlaps,GRanges,GIntervalTree-method}}
 
   Other GIntervalTree: \code{\link{GIntervalTree}},
   \code{\link{as}}, \code{\link{as}}, \code{\link{as}},
-  \code{\link{findOverlaps,GRanges,GIntervalTree-method}},
-  \code{\link{subsetByOverlaps,GIntervalTree,GRanges-method}}
+  \code{\link{as}},
+  \code{\link{findOverlaps,GRanges,GIntervalTree-method}}
 
   Other GIntervalTree: \code{\link{GIntervalTree}},
   \code{\link{as}}, \code{\link{as}}, \code{\link{as}},
-  \code{\link{findOverlaps,GRanges,GIntervalTree-method}},
-  \code{\link{subsetByOverlaps,GIntervalTree,GRanges-method}}
+  \code{\link{as}},
+  \code{\link{findOverlaps,GRanges,GIntervalTree-method}}
 
   Other GIntervalTree: \code{\link{GIntervalTree}},
   \code{\link{as}}, \code{\link{as}}, \code{\link{as}},
-  \code{\link{findOverlaps,GRanges,GIntervalTree-method}},
-  \code{\link{subsetByOverlaps,GIntervalTree,GRanges-method}}
+  \code{\link{as}},
+  \code{\link{findOverlaps,GRanges,GIntervalTree-method}}
 
   Other GIntervalTree: \code{\link{GIntervalTree}},
   \code{\link{as}}, \code{\link{as}}, \code{\link{as}},
-  \code{\link{findOverlaps,GRanges,GIntervalTree-method}},
-  \code{\link{subsetByOverlaps,GIntervalTree,GRanges-method}}
+  \code{\link{as}},
+  \code{\link{findOverlaps,GRanges,GIntervalTree-method}}
 
   Other GIntervalTree: \code{\link{GIntervalTree}},
   \code{\link{as}}, \code{\link{as}}, \code{\link{as}},
-  \code{\link{findOverlaps,GRanges,GIntervalTree-method}},
-  \code{\link{subsetByOverlaps,GIntervalTree,GRanges-method}}
+  \code{\link{as}},
+  \code{\link{findOverlaps,GRanges,GIntervalTree-method}}
 
   Other GIntervalTree: \code{\link{GIntervalTree}},
   \code{\link{as}}, \code{\link{as}}, \code{\link{as}},
-  \code{\link{findOverlaps,GRanges,GIntervalTree-method}},
-  \code{\link{subsetByOverlaps,GIntervalTree,GRanges-method}}
-
-  Other GIntervalTree: \code{\link{GIntervalTree}},
-  \code{\link{as}}, \code{\link{as}}, \code{\link{as}},
-  \code{\link{findOverlaps,GRanges,GIntervalTree-method}},
-  \code{\link{subsetByOverlaps,GIntervalTree,GRanges-method}}
-
-  Other GIntervalTree: \code{\link{GIntervalTree}},
-  \code{\link{as}}, \code{\link{as}}, \code{\link{as}},
-  \code{\link{findOverlaps,GRanges,GIntervalTree-method}},
-  \code{\link{subsetByOverlaps,GIntervalTree,GRanges-method}}
+  \code{\link{as}},
+  \code{\link{findOverlaps,GRanges,GIntervalTree-method}}
 }
 

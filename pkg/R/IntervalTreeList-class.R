@@ -17,7 +17,7 @@ IntervalTreeList <- function(rangesList) {
 #' construct from ranges list by coercion
 #' @name as
 #' @family IntervalTreeList
-#' @importClassesFrom GenomicRanges RangesList
+#' @importClassesFrom IRanges RangesList
 setAs("RangesList", "IntervalTreeList",
       function(from) {
         #IRanges:::validObject(from)
